@@ -245,7 +245,7 @@ blockquote span {
 }
 
 a[href$='.js'] {
-	color: #F05D77;
+	color: #46D044;
 	text-decoration: none;
 }
 a[href$='.js']:before {
@@ -266,25 +266,26 @@ pre > code.prettyprint {
 	color: white;
 }
 
-.prettyprint > .keyword {
-	color: #F05D77;
+.prettyprint > .keyword,
+.function > .keyword {
+	color: #46D044;
 	font-weight: normal;
 }
 
+.prettyprint > .function > .title {
+	color: #A0A0A0;
+}
+
 .prettyprint > .string {
-	color: #F47A3B;
+	color: #EC55D6;
 }
 
 .prettyprint > .comment {
-	color: #6EE18F;
+	color: #56FEFF;
 }
 
 .prettyprint > .literal {
-	color: #F05D77;
-}
-
-.prettyprint > .string {
-	color: #F47A3B;
+	color: #46D044;
 }
 
 ul + pre > code.prettyprint {

@@ -1,16 +1,8 @@
-( function( AC ) {
-
-    var ctx = null;
-    if ( AC ) {
-        ctx = new AC( );
-        console.log( "Created context", ctx );
-    } else {
-        console.warn( "No Audio API!!!" );
-    }
-
+( function( ctx ) {
     
     /**
-     * Wrap the process of getting the sound as an array-buffer into a `Promise`.
+     * Wrap the process of getting the sound as an array-buffer
+     * into a `Promise`.
      * 
      * @returns Promise
      * @resolves ArrayBuffer.
@@ -62,18 +54,13 @@
     }
 
     //Test the above methods ;)
-    getAudioBuffer( "samples/rain.ogg" ).then( function( arg ) {
+    getAudioBuffer( "samples/rain.ogg" ).then( function( buffer ) {
         var src = ctx.createBufferSource();
-        src.buffer = arg;
+        src.buffer = buffer;
         src.connect( ctx.destination );
         src.start( 0 );
-        console.log( 'test' );
     } );
 
 }(
-    window.AudioContext || 
-    window.webkitAudioContext || 
-    window.mozAudioContext || 
-    window.oAudioContext || 
-    window.msAudioContext
+    getContext()
 ));
