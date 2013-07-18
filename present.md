@@ -136,9 +136,14 @@ getAudioBuffer( "samples/rain.ogg" ).then( function( buffer ) {
 } );
 ```
 
-Looks much better, right? And it works too: [basicpromises.js](present.src/basicpromises.js)
+Looks much better, right? And it works too: [basicpromises.js](present.src/basicpromises.js), which can be mixed with [Source](present.src/basics.js)
 
 ---
+
+## Some of the sound basics
+
+- Looping, just set src.loop = true;
+- 
 
 
 <script src="present.src/rsvp.js"></script><script src="present.src/scriptloader.js"></script>
