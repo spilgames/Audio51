@@ -1,0 +1,24 @@
+{
+  "resources": [
+    "output.ac3",
+    "output.ogg",
+    "output.mp3"
+  ],
+  "spritemap": {
+    "churchbell1": {
+      "start": 0,
+      "end": 2.7820408163265307,
+      "loop": false
+    },
+    "evllaugh": {
+      "start": 4,
+      "end": 8.091065759637189,
+      "loop": false
+    },
+    "policesiren2": {
+      "start": 10,
+      "end": 19.211065759637187,
+      "loop": false
+    }
+  }
+}
