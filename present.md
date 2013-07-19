@@ -11,7 +11,7 @@ tag.src = "samples/thunder.ogg";
 tag.play();
 ```
 
-[Source](present.src/atbasics.js)
+[atbasics.js](present.src/atbasics.js)
 
 ---
 
@@ -35,6 +35,8 @@ tag.play();
 I recommend using [tonistiigi/audiosprite](https://github.com/tonistiigi/audiosprite)
 
 - `audiosprite -e ac3,ogg,mp3 churchbell1.ogg evllaugh.ogg`
+- Automatically padded with silence
+- JSON generated with start/stop times
 
 ---
 
@@ -136,7 +138,7 @@ client.responseType = "arraybuffer";
 client.send();
 ```
 
-[Source](present.src/basics.js)
+[basics.js](present.src/basics.js)
 
 ---
 
@@ -245,7 +247,7 @@ getAudioBuffer( "samples/rain.ogg" ).then( function( buffer ) {
 } );
 ```
 
-Looks much better, right? And it works too: [basicpromises.js](present.src/basicpromises.js), which can be mixed with [Source](present.src/basics.js)
+Looks much better, right? And it works too: [basicpromises.js](present.src/basicpromises.js), which can be mixed with [basics.js](present.src/basics.js)
 
 ---
 
