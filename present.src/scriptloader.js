@@ -26,20 +26,3 @@
     } );
 
 }());
-
-var getContext = (function(AC){
-    var ctx = null;
-    
-    return function() {
-        if ( ctx === null ) {
-            ctx = new AC();
-        }
-        return ctx;
-    }
-}(
-    window.AudioContext || 
-    window.webkitAudioContext || 
-    window.mozAudioContext || 
-    window.oAudioContext || 
-    window.msAudioContext
-));

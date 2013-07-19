@@ -143,7 +143,10 @@ Looks much better, right? And it works too: [basicpromises.js](present.src/basic
 ## Some of the sound basics
 
 - Looping, just set src.loop = true;
-- 
+- Fading, put a gainsource between your source and destination.
+- Timing, is a little more tricky! But basically .start(n) will allow you to fire the sound at a later time.
+- Generating sound. So many ways to go about this! OscillatorNode, JavascriptNode, or even writing your own ArrayBuffer and decoding it.
 
+---
 
-<script src="present.src/rsvp.js"></script><script src="present.src/scriptloader.js"></script>
+<script src="present.src/rsvp.js"></script><script src="present.src/scriptloader.js"></script><script src="present.src/sugar.js"></script>
