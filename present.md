@@ -106,6 +106,7 @@ function playSprite( spriteName ) {
 - [This example](present.src/atcomplete.js?rough) is lacking some safeties, for instance in handling already playing.
 - Chrome requires that a server supports [byte range request](https://developer.mozilla.org/en-US/docs/Configuring_servers_for_Ogg_media#Handle_HTTP_1.1_byte_range_requests_correctly)
 - Not all audio formats are supported equally well, so you'll need to check and serve the correct type
+- When switching tabs/windows sound will keep playing as getAnimationFrame gets paused...
 
 ---
 
