@@ -77,6 +77,7 @@ AudioTestFramework = (function() {
 
         this.destination.connect(this.ctx.destination);
     }
+
     AudioContextWrapper.prototype = {
         getContext: function() {
             return this.ctx;
@@ -112,127 +113,17 @@ AudioTestFramework = (function() {
          */
         isPlaying: function() {
             return this.ctx.activeSourceCount > 0;
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createBuffer: function() {
-            var ctx = getContext()
-            return ctx.createBuffer.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createBufferSource: function() {
-            var ctx = getContext()
-            return ctx.createBufferSource.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createMediaElementSource: function() {
-            var ctx = getContext()
-            return ctx.createMediaElementSource.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createMediaStreamSource: function() {
-            var ctx = getContext()
-            return ctx.createMediaStreamSource.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createMediaStreamDestination: function() {
-            var ctx = getContext()
-            return ctx.createMediaStreamDestination.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createAnalyser: function() {
-            var ctx = getContext()
-            return ctx.createAnalyser.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createGain: function() {
-            var ctx = getContext()
-            return ctx.createGain.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createDelay: function() {
-            var ctx = getContext()
-            return ctx.createDelay.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createBiquadFilter: function() {
-            var ctx = getContext()
-            return ctx.createBiquadFilter.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createWaveShaper: function() {
-            var ctx = getContext()
-            return ctx.createWaveShaper.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createPanner: function() {
-            var ctx = getContext()
-            return ctx.createPanner.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createConvolver: function() {
-            var ctx = getContext()
-            return ctx.createConvolver.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createChannelSplitter: function() {
-            var ctx = getContext()
-            return ctx.createChannelSplitter.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createChannelMerger: function() {
-            var ctx = getContext()
-            return ctx.createChannelMerger.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createDynamicsCompressor: function() {
-            var ctx = getContext()
-            return ctx.createDynamicsCompressor.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createOscillator: function() {
-            var ctx = getContext()
-            return ctx.createOscillator.apply(ctx, arguments);
-        },
-        /**
-         * @see https://developer.mozilla.org/en-US/docs/Web/API/AudioContext
-         */
-        createWaveTable: function() {
-            var ctx = getContext()
-            return ctx.createWaveTable.apply(ctx, arguments);
         }
-
+    }
+    
+    for ( var m in getContext() ) {
+        (function( method ) { 
+            AudioContextWrapper.prototype[method] = function() {
+                var ctx = getContext();
+                console.log(method, arguments);
+                return ctx[method].apply( ctx, arguments );
+            }
+        }(m));
     }
     
     AudioContextWrapper.undo = function() {

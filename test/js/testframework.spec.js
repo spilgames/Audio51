@@ -171,18 +171,33 @@ describe("Audio Test Framework", function () {
                 return createAudioBuffer( binaryData );
             } );
         }
+        
+        runs(function () {
 
-        getAudioBuffer( "test/js/testsample.ogg" ).then( function( buffer ) {
-            console.log('Sound is in tha house');
-            src = atf.createBufferSource();
-            src.buffer = buffer;
-            src.connect( atf.destination );
-            src.start( 0 );
-        }, function() {
-            console.log( "Failed to load sound :(", arguments );
-        } );
+            getAudioBuffer( "test/js/testsample.mp3" ).then( function( buffer ) {
+                console.log('Sound is in tha house');
+                src = atf.createBufferSource();
+                src.buffer = buffer;
+                src.connect( atf.destination );
+                if ( src.start ) src.start( 0 );
+                else src.noteOn( 0 );
+            }, function() {
+                console.log( "Failed to load sound :(", arguments );
+            } );
 
-        expect( atf.getVolumeAverage( true ) ).toBeGreaterThan( 0 );
+        });
+        waitsFor(function () {
+
+            return typeof src !== "undefined";
+
+        }, "XHR request to finish", 500);
+        runs(function () {
+
+            expect( atf.getVolumeAverage( true ) ).toBeGreaterThan( 0 );
+            if ( src.stop ) src.stop( 0 );
+            else src.noteOff( 0 );
+
+        });
 
     });
 

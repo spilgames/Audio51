@@ -20,7 +20,7 @@
     ],
     "src_files": [
         "src/**/*.js",
-        "test/js/**/*.ogg",
+        "test/js/**/*.mp3",
         "test/js/**/*.js"
     ],
     "watch_files": [
