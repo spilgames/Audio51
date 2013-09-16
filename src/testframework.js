@@ -3,13 +3,13 @@
  * a mock class for the AudioContext of the WebAudio API. Well, a little more,
  * as it's default destination is an analyzer node, which allows for calculation
  * on values like average volume, frequency buckets, etc...
- * Will also include a method to retrieve an Audio Node slaved to this mock so
+ * Will also include a method to retrieve an Audio Element slaved to this mock so
  * that it's output can be unit-tested.
  * 
  */
-AudioTestFramework = (function() {
+AudioTestFramework = ( function() {
 
-    var getContext = (function(AC){
+    var getContext = ( function( AC ){
             var ctx = null;
             
             return function() {
@@ -25,38 +25,43 @@ AudioTestFramework = (function() {
             window.oAudioContext || 
             window.msAudioContext
         )),
-        orgContext = window.AudioContext
-        orgAudio = Audio
+        orgContext = window.AudioContext,
+        orgAudio = Audio,
+        m
     ;
 
     /**
+     * Constructor for test-framework.
+     * This constructor will create an analyzer node to be supplied as a
+     * destination instead of the built-in destination. It will still be
+     * connected to the original destination, otherwise audio won't play.
+     * Constructor will also overwrite the Audio constructor.
      * 
-        interface AudioProcessingEvent : Event {
-
-            readonly attribute double playbackTime;
-            readonly attribute AudioBuffer inputBuffer;
-            readonly attribute AudioBuffer outputBuffer;
-        
-        };
+     * @constructor
      */
-    function processAudio( wrapper, args ) {
-        //stub
-    }
-
     function AudioContextWrapper() {
         this.ctx = getContext();
         this.destination = this.ctx.createAnalyser();
-        this.destination.smoothingTimeConstant = 0;
+        this.destination.smoothingTimeConstant = 0; //No delays, realtime
         this.destination.fftSize = 1024;
+        this.destination.connect(this.ctx.destination);
+
         var self = this;
-        
+
+        /**
+         * Audio constructor overwrite. This overwrite will tie the Audio-element
+         * to the active analyzer node, allowing output inspection and thus being
+         * able to unit-test fades, cross-overs, etc...
+         * Currently fails in Safari because Safari does not support the `canplay`
+         * event.
+         */
         Audio = function( url ) {
             var at = new orgAudio(  );
             at.autoplay = true;
 
             // Cannot attach audio tag to context before it is ready to play
             // or it won't actually attach to the context. This is a work-around
-            // for a bug.
+            // for a known bug.
             // More info: crbug.com/112368
             at.addEventListener("canplay", function() {
                 var an = getContext().createMediaElementSource( at );
@@ -75,7 +80,6 @@ AudioTestFramework = (function() {
             return at;
         }
 
-        this.destination.connect(this.ctx.destination);
     }
 
     AudioContextWrapper.prototype = {
@@ -115,8 +119,12 @@ AudioTestFramework = (function() {
             return this.ctx.activeSourceCount > 0;
         }
     }
-    
-    for ( var m in getContext() ) {
+
+    /**
+     * Create pass-through methods for all methods on the real
+     * WebAudioContext.
+     */
+    for ( m in getContext() ) {
         (function( method ) { 
             AudioContextWrapper.prototype[method] = function() {
                 var ctx = getContext();
@@ -125,12 +133,22 @@ AudioTestFramework = (function() {
             }
         }(m));
     }
-    
+
+    /**
+     * Restore original Objects.
+     */
     AudioContextWrapper.undo = function() {
         window.AudioContext = orgContext;
+        Audio = orgAudio;
     }
+    /**
+     * Hijack AudioContext
+     */
     window.AudioContext = AudioContextWrapper;
 
+    /**
+     * Return constructor
+     */
     return AudioContextWrapper;
     
 }());
