@@ -11,15 +11,16 @@
         }
     },
     "launch_in_dev": [
-        "PhantomJS",
+        "Chrome",
         "JSHint"
     ],
     "launch_in_ci": [
-        "PhantomJS",
+        "Chrome",
         "JSHint"
     ],
     "src_files": [
         "src/**/*.js",
+        "test/js/**/*.ogg",
         "test/js/**/*.js"
     ],
     "watch_files": [
