@@ -74,7 +74,7 @@ describe("Audio Test Framework", function () {
         
         runs(function () {
 
-            sound = new Audio( "data:audio/ogg;base64," + testOgg );
+            sound = new Audio( "test/js/testsample.mp3" );
 
         });
         waitsFor(function () {
