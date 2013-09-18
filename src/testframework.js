@@ -125,13 +125,16 @@ AudioTestFramework = ( function() {
      * WebAudioContext.
      */
     for ( m in getContext() ) {
-        (function( method ) { 
-            AudioContextWrapper.prototype[method] = function() {
-                var ctx = getContext();
-                console.log(method, arguments);
-                return ctx[method].apply( ctx, arguments );
-            }
-        }(m));
+        if (!Object.hasOwnProperty(m)) {
+            (function( method ) { 
+                console.log('Mapping context method: ', method);
+                AudioContextWrapper.prototype[method] = function() {
+                    var ctx = getContext();
+                    console.log(method, arguments);
+                    return ctx[method].apply( ctx, arguments );
+                }
+            }(m));
+        }
     }
 
     /**
