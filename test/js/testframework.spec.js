@@ -15,7 +15,37 @@
 describe("Audio Test Framework", function () {
     
     var atf = new AudioTestFramework(),
-        requestAnimationFrame = window.requestAnimationFrame||window.webkitRequestAnimationFrame;
+        requestAnimationFrame = window.requestAnimationFrame||window.webkitRequestAnimationFrame,
+        node = null, sound = null;
+    
+    afterEach(function() {
+        runs(function () {
+
+            if (node) {
+                if ( node.stop ) node.stop( 0 );
+                else node.noteOff( 0 );
+            }
+            if (sound !== null) {
+                sound.pause();
+                sound.audionode.disconnect();
+                sound = null;
+            }
+
+        });
+        waitsFor(function () {
+
+            return atf.ctx.activeSourceCount === 0;
+
+        }, "Nodes to stop being active...", 500);
+        runs(function () {
+
+            if (node) {
+                node.disconnect();
+                node = null;
+            }
+
+        });
+    })
 
     it("should detect sound is not playing", function () {
 
@@ -24,22 +54,22 @@ describe("Audio Test Framework", function () {
 
     });
     
-    it("should be able to create an oscillator", function () {
+    xit("should be able to create an oscillator", function () {
 
-        var osc = atf.createOscillator();
-        expect( osc ).toBeDefined(  );
+        node = atf.createOscillator();
+        expect( node ).toBeDefined(  );
 
     });
 
-    it("should detect when sound is playing", function () {
+    xit("should detect when sound is playing", function () {
 
-        var osc = atf.createOscillator( );
+        node = atf.createOscillator( );
 
         runs(function () {
 
-            osc.connect( atf.destination );
-            if ( osc.start ) osc.start( 0 );
-            else osc.noteOn( 0 );
+            node.connect( atf.destination );
+            if ( node.start ) node.start( 0 );
+            else node.noteOn( 0 );
 
         });
         waitsFor(function () {
@@ -49,9 +79,9 @@ describe("Audio Test Framework", function () {
         }, "sound to start playing", 250 );
         runs(function () {
 
-            expect( osc.playbackState ).toBe( 2 );
-            if ( osc.stop ) osc.stop( 0 );
-            else osc.noteOff( 0 );
+            expect( node.playbackState ).toBe( 2 );
+            if ( node.stop ) node.stop( 0 );
+            else node.noteOff( 0 );
 
         });
         waitsFor(function () {
@@ -61,64 +91,13 @@ describe("Audio Test Framework", function () {
         }, "sound to stop playing", 250 );
         runs(function () {
 
-            expect( osc.playbackState ).toBe( 3 );
-            osc.disconnect( );
+            expect( node.playbackState ).toBe( 3 );
 
         });
-
-    });
-    
-    it("should detect when sound is playing from an Audio tag", function () {
-
-        var sound,
-            seek;
-        
-        runs(function () {
-
-            sound = new Audio( "test/js/testsample.mp3" );
-
-        });
-        waitsFor(function () {
-
-            return sound.isConnected;
-
-        }, "sound to finish loading", 250 );
-        runs(function () {
-
-            console.log("Starting the sound to play.")
-            sound.play();
-
-        });
-        waitsFor(function () {
-
-            return atf.isPlaying() || atf.getVolumeAverage( true ) > 0;
-
-        }, "sound to start playing", 250 );
-        runs(function () {
-
-            seek = sound.seek;
-            expect( sound.seek > 0 );
-            sound.pause();
-
-        });
-        waitsFor(function () {
-
-            return atf.getVolumeAverage( true ) === 0;
-
-        }, "sound to stop playing", 250 );
-        runs(function () {
-
-            seek = sound.seek;
-            expect( sound.seek === seek );
-
-        });
-
 
     });
 
     it("should detect sound playing from XHR request", function () {
-
-        var src;
 
         /**
          * Wrap the process of getting the sound as an array-buffer
@@ -178,11 +157,11 @@ describe("Audio Test Framework", function () {
             expect( atf.getVolumeAverage( true ) ).toBe( 0 );
             getAudioBuffer( "test/js/testsample.mp3" ).then( function( buffer ) {
                 console.log('Sound is in tha house');
-                src = atf.createBufferSource();
-                src.buffer = buffer;
-                src.connect( atf.destination );
-                if ( src.start ) src.start( 0 );
-                else src.noteOn( 0 );
+                node = atf.createBufferSource();
+                node.buffer = buffer;
+                node.connect( atf.destination );
+                if ( node.start ) node.start( 0 );
+                else node.noteOn( 0 );
             }, function() {
                 console.log( "Failed to load sound :(", arguments );
             } );
@@ -190,16 +169,63 @@ describe("Audio Test Framework", function () {
         });
         waitsFor(function () {
 
-            return typeof src !== "undefined" && atf.getVolumeAverage( true ) > 0;
+            return node !== null && atf.getVolumeAverage( true ) > 0;
 
         }, "XHR request to finish", 500);
         runs(function () {
 
             expect( atf.getVolumeAverage( true ) ).toBeGreaterThan( 0 );
-            if ( src.stop ) src.stop( 0 );
-            else src.noteOff( 0 );
+            if ( node.stop ) node.stop( 0 );
+            else node.noteOff( 0 );
 
         });
+
+    });
+    
+    it("should detect when sound is playing from an Audio tag", function () {
+
+        var seek;
+        
+        runs(function () {
+
+            sound = new Audio( "test/js/testsample.mp3" );
+
+        });
+        waitsFor(function () {
+
+            return sound.isConnected;
+
+        }, "sound to finish loading", 250 );
+        runs(function () {
+
+            console.log("Starting the sound to play.")
+            sound.play();
+
+        });
+        waitsFor(function () {
+
+            return atf.isPlaying() || atf.getVolumeAverage( true ) > 0;
+
+        }, "sound to start playing", 250 );
+        runs(function () {
+
+            seek = sound.seek;
+            expect( sound.seek > 0 );
+            sound.pause();
+
+        });
+        waitsFor(function () {
+
+            return atf.getVolumeAverage( true ) === 0;
+
+        }, "sound to stop playing", 250 );
+        runs(function () {
+
+            seek = sound.seek;
+            expect( sound.seek === seek );
+
+        });
+
 
     });
 

@@ -12,6 +12,7 @@
     },
     "launch_in_dev": [
         "Chrome",
+        "Safari",
         "JSHint"
     ],
     "launch_in_ci": [
