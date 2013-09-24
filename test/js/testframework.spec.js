@@ -1,3 +1,5 @@
+/*global describe, it, expect, afterEach, beforeEach, runs, spyOn */
+/*global waitsFor, xit, RSVP, console, AudioTestFramework */
 /**
 
     var atf = new AudioTestFramework();
@@ -13,17 +15,23 @@
  */
 
 describe("Audio Test Framework", function () {
+    'use strict';
     
     var atf = new AudioTestFramework(),
-        requestAnimationFrame = window.requestAnimationFrame||window.webkitRequestAnimationFrame,
+        requestAnimationFrame = window.requestAnimationFrame||
+                window.webkitRequestAnimationFrame,
         node = null, sound = null;
     
     afterEach(function() {
         runs(function () {
 
             if (node) {
-                if ( node.stop ) node.stop( 0 );
-                else node.noteOff( 0 );
+                if ( node.stop ) {
+                    node.stop( 0 );
+                }
+                else {
+                    node.noteOff( 0 );
+                }
             }
             if (sound !== null) {
                 sound.pause();
@@ -45,7 +53,7 @@ describe("Audio Test Framework", function () {
             }
 
         });
-    })
+    });
 
     it("should detect sound is not playing", function () {
 
@@ -68,8 +76,11 @@ describe("Audio Test Framework", function () {
         runs(function () {
 
             node.connect( atf.destination );
-            if ( node.start ) node.start( 0 );
-            else node.noteOn( 0 );
+            if ( node.start ) {
+                node.start( 0 );
+            } else {
+                node.noteOn( 0 );
+            }
 
         });
         waitsFor(function () {
@@ -80,8 +91,11 @@ describe("Audio Test Framework", function () {
         runs(function () {
 
             expect( node.playbackState ).toBe( 2 );
-            if ( node.stop ) node.stop( 0 );
-            else node.noteOff( 0 );
+            if ( node.stop ) {
+                node.stop( 0 );
+            } else {
+                node.noteOff( 0 );
+            }
 
         });
         waitsFor(function () {
@@ -160,8 +174,11 @@ describe("Audio Test Framework", function () {
                 node = atf.createBufferSource();
                 node.buffer = buffer;
                 node.connect( atf.destination );
-                if ( node.start ) node.start( 0 );
-                else node.noteOn( 0 );
+                if ( node.start ) {
+                    node.start( 0 );
+                } else {
+                    node.noteOn( 0 );
+                }
             }, function() {
                 console.log( "Failed to load sound :(", arguments );
             } );
@@ -175,8 +192,11 @@ describe("Audio Test Framework", function () {
         runs(function () {
 
             expect( atf.getVolumeAverage( true ) ).toBeGreaterThan( 0 );
-            if ( node.stop ) node.stop( 0 );
-            else node.noteOff( 0 );
+            if ( node.stop ) {
+                node.stop( 0 );
+            } else {
+                node.noteOff( 0 );
+            }
 
         });
 
@@ -198,7 +218,7 @@ describe("Audio Test Framework", function () {
         }, "sound to finish loading", 250 );
         runs(function () {
 
-            console.log("Starting the sound to play.")
+            console.log("Starting the sound to play.");
             sound.play();
 
         });
