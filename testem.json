@@ -7,7 +7,7 @@
             "command": "grunt sass:dev"
         },
         "JSHint": {
-            "command": "jshint src/**/*.js"
+            "command": "jshint src"
         }
     },
     "launch_in_dev": [

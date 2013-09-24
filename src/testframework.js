@@ -1,3 +1,6 @@
+/*global console */
+/*jshint -W020*/ //ignore 'Read only' warning for overwriting Audio
+/*jshint -W083*/ //ignore 'Don't create functions in loops'
 /**
  * Test framework for testing audio-based code. This is no more, or less, than
  * a mock class for the AudioContext of the WebAudio API. Well, a little more,
@@ -7,7 +10,8 @@
  * that it's output can be unit-tested.
  * 
  */
-AudioTestFramework = ( function() {
+var AudioTestFramework = ( function() {
+    "use strict";
 
     var getContext = ( function( AC ){
             var ctx = null;
@@ -17,7 +21,7 @@ AudioTestFramework = ( function() {
                     ctx = new AC();
                 }
                 return ctx;
-            }
+            };
         }(
             window.AudioContext || 
             window.webkitAudioContext || 
@@ -26,7 +30,7 @@ AudioTestFramework = ( function() {
             window.msAudioContext
         )),
         orgContext = window.AudioContext,
-        orgAudio = Audio,
+        OrgAudio = Audio,
         m
     ;
 
@@ -56,7 +60,7 @@ AudioTestFramework = ( function() {
          * event.
          */
         Audio = function( url ) {
-            var at = new orgAudio(  );
+            var at = new OrgAudio(  );
             at.autoplay = true;
 
             // Cannot attach audio tag to context before it is ready to play
@@ -78,7 +82,7 @@ AudioTestFramework = ( function() {
             }
 
             return at;
-        }
+        };
 
     }
 
@@ -92,7 +96,7 @@ AudioTestFramework = ( function() {
          * a little, take this into account in unit-testing.
          */
         getVolumeAverage: function( override ) {
-            if ( !override && this.ctx.activeSourceCount == 0 ) {
+            if ( !override && this.ctx.activeSourceCount === 0 ) {
                 return 0;
             }
             var values = 0,
@@ -118,7 +122,7 @@ AudioTestFramework = ( function() {
         isPlaying: function() {
             return this.ctx.activeSourceCount > 0;
         }
-    }
+    };
 
     /**
      * Create pass-through methods for all methods on the real
@@ -132,7 +136,7 @@ AudioTestFramework = ( function() {
                     var ctx = getContext();
                     console.log(method, arguments);
                     return ctx[method].apply( ctx, arguments );
-                }
+                };
             }(m));
         }
     }
@@ -142,8 +146,8 @@ AudioTestFramework = ( function() {
      */
     AudioContextWrapper.undo = function() {
         window.AudioContext = orgContext;
-        Audio = orgAudio;
-    }
+        Audio = OrgAudio;
+    };
     /**
      * Hijack AudioContext
      */
