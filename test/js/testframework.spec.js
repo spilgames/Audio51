@@ -169,7 +169,7 @@ describe("Audio Test Framework", function () {
         runs(function () {
 
             expect( atf.getVolumeAverage( true ) ).toBe( 0 );
-            getAudioBuffer( "test/js/testsample.mp3" ).then( function( buffer ) {
+            getAudioBuffer( "test/js/pulse.wav" ).then( function( buffer ) {
                 console.log('Sound is in tha house');
                 node = atf.createBufferSource();
                 node.buffer = buffer;
@@ -208,7 +208,7 @@ describe("Audio Test Framework", function () {
         
         runs(function () {
 
-            sound = new Audio( "test/js/testsample.mp3" );
+            sound = new Audio( "test/js/pulse.wav" );
 
         });
         waitsFor(function () {

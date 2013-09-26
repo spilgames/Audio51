@@ -23,7 +23,7 @@ describe("The Audio51 framework", function () {
         
         runs(function () {
 
-            context.loadAudio("test/js/testsample.mp3").then(
+            context.loadAudio("test/js/pulse.wav").then(
                 function(sprites) {
                     done = sprites;
                 },
@@ -56,7 +56,7 @@ describe("The Audio51 framework", function () {
 
         runs(function () {
 
-            context.loadAudio("test/js/testsample.mp3").then(
+            context.loadAudio("test/js/pulse.wav").then(
                 function(sprite) {
                     sprite = sprite;
                 },

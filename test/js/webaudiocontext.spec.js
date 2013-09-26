@@ -28,7 +28,7 @@ describe("The webaudio/context", function () {
         
         runs(function () {
 
-            context.loadSound('test/js/testsample.mp3').then(
+            context.loadSound('test/js/pulse.wav').then(
                 function(s) {
                     sound = s;
                 },
