@@ -57,11 +57,11 @@ describe("The Audio51 framework", function () {
         runs(function () {
 
             context.loadAudio("test/js/testsample.mp3").then(
-                function(sprites) {
-                    done = sprites;
+                function(sprite) {
+                    sprite = sprite;
                 },
                 function(sprites) {
-                    done = false; //fail...
+                    sprite = false; //fail...
                 }
             );
 
@@ -69,15 +69,14 @@ describe("The Audio51 framework", function () {
 
         waitsFor(function () {
 
-            return done !== null;
+            return sprite !== null;
 
         }, "audio to load", 1000);
 
         runs(function () {
 
-            console.log(done);
-            expect(Array.isArray(done)).toBeTruthy();
-            expect(done.length).toBeGreaterThan(0);
+            console.log(sprite);
+            expect( typeof sprite ).toBe("Sound");
 
         });
 
