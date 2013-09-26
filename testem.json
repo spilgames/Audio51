@@ -20,7 +20,10 @@
         "JSHint"
     ],
     "src_files": [
-        "src/**/*.js",
+        "lib/require/require.js",
+        "test/bootstrap.js",
+        "src/rsvp.js",
+        "src/testframework.js",
         "test/js/**/*.mp3",
         "test/js/**/*.js"
     ],
