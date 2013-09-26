@@ -1,0 +1,6 @@
+{
+  "name":"Audio51",
+  "dependencies": {
+  	"require": "https://github.com/jrburke/requirejs.git#~2.1"
+  }
+}
