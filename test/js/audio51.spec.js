@@ -1,6 +1,6 @@
 /*global describe, it, expect, afterEach, beforeEach, runs, spyOn, waitsFor, require */
 /*global AudioContext*/
-describe("The Audio51 framework", function () {
+xdescribe("The Audio51 framework", function () {
     'use strict';
     
     var context = null;
