@@ -3,6 +3,7 @@ var getContext = (function(AC){
     
     return function() {
         if ( ctx === null ) {
+            console.log('Creating new Context');
             ctx = new AC();
         }
         return ctx;
