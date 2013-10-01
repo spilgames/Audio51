@@ -67,4 +67,41 @@ describe("The webaudio/context", function () {
         });
 
     });
+    
+    describe("webaudio/sound", function () {
+
+        var sound = null;
+
+        beforeEach(function() {
+            
+            sound = null;
+            
+            runs(function () {
+
+                context.loadSound('test/js/pulse.wav').then(
+                    function(s) {
+                        sound = s;
+                    },
+                    function(e) {
+                        sound = false;
+                        console.warn(e);
+                    }
+                );
+
+            });
+            waitsFor(function () {
+
+                return sound !== null;
+
+            }, "sound to finish loading", 2000);
+            
+        });
+
+        it("can obtain the length of a sound", function () {
+
+            expect( sound.getLength() ).toBe( 1 );
+
+        });
+
+    });
 });
