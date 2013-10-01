@@ -4,8 +4,14 @@
         vollumeControl,
         sound1 = null,
         node1 = null, node2 = null,
-        silence = "data:audio/wav;base64,UklGRjQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YRAAAAAAAAEA/v8CAP7/AgD//wAA";
-        silence2 = [82, 73, 70, 70, 52, 0, 0, 0, 87, 65, 86, 69, 102, 109, 116, 32, 16, 0, 0, 0, 1, 0, 1, 0, 64, 31, 0, 0, 128, 62, 0, 0, 2, 0, 16, 0, 100, 97, 116, 97, 16, 0, 0, 0, 0, 0, 1, 0, 254, 255, 2, 0, 254, 255, 2, 0, 255, 255, 0, 0];
+        silentBytes = [82,73,70,70,52,0,0,0,87,65,86,69,102,109,116,32,16,0,0,0,1,0,1,0,64,31,0,0,128,62,0,0,2,0,16,0,100,97,116,97,16,0,0,0,0,0,1,0,254,255,2,0,254,255,2,0,255,255,0,0],
+        i = 0, l = silentBytes.length,
+        silence = new ArrayBuffer(l),
+        bytes = new Uint8Array(silence);
+    
+    while (i < l) {
+        bytes[i] = silentBytes[i++];
+    }
 
     /**
      * Wrap the process of getting the sound as an array-buffer
@@ -74,18 +80,8 @@
             volumeControl.disconnect();
         });
 
-
-        var arraybuffer = new ArrayBuffer(silence2.length),
-            bytes = new Uint8Array(arraybuffer),
-            i = 0, l = silence2.length;
-        
-        while (i < l) {
-            bytes[i] = silence2[i++];
-        }
-
-        createAudioBuffer( arraybuffer ).then(
+        createAudioBuffer( silence ).then(
             function( buffer ) {
-                console.log('buffer finished');
                 sound1 = buffer;
             },
             function() {
