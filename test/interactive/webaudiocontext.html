@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="../../lib/require/require.js"></script>
+	<script src="../../liblocal/rsvp.js"></script>
+	<script src="bootstrap.js"></script>
+	<script src="webaudiocontext.js"></script>
+	<script>
+		require(["webaudiocontext/interactive/test1"], function(test) {
+		    //Should hear audio by now...
+		    console.log("You should hear something now :)");
+		});
+	</script>
+</head>
+<body>
+	<p>Check the console, click anywhere to enable sound on iOS.</p>
+	<p><a id="l1" href="#saw">Start</a> a different sound</p>
+	<p><a id="l2" href="#stop">Stop</a> the sounds</p>
+</body>
+</html>
