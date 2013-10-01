@@ -17,6 +17,7 @@ define("webaudiocontext/interactive/test1", ["webaudio/context"], function(conte
     context.loadSound('../js/pulse.wav').then(
         function(s) {
             pulse = s;
+            s.loop(true);
             s.play();
         },
         function(e) {
