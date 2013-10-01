@@ -4,14 +4,18 @@
         vollumeControl,
         sound1 = null,
         node1 = null, node2 = null,
-        silentBytes = [82,73,70,70,52,0,0,0,87,65,86,69,102,109,116,32,16,0,0,0,1,0,1,0,64,31,0,0,128,62,0,0,2,0,16,0,100,97,116,97,16,0,0,0,0,0,1,0,254,255,2,0,254,255,2,0,255,255,0,0],
-        i = 0, l = silentBytes.length,
-        silence = new ArrayBuffer(l),
-        bytes = new Uint8Array(silence);
+        silence = (function(){
+            var silentBytes = [82,73,70,70,52,0,0,0,87,65,86,69,102,
+                    109,116,32,16,0,0,0,1,0,1,0,64,31,0,0,128,62,0,0,
+                    2,0,16,0,100,97,116,97,16,0,0,0,0,0,1,0,254,255,2,
+                    0,254,255,2,0,255,255,0,0],
+                silentBuffer = new ArrayBuffer(silentBytes.length),
+                bytes = new Uint8Array(silentBuffer);
+
+            bytes.set(silentBytes);
+            return silentBuffer;
+        }());
     
-    while (i < l) {
-        bytes[i] = silentBytes[i++];
-    }
 
     /**
      * Wrap the process of getting the sound as an array-buffer
@@ -82,7 +86,10 @@
 
         createAudioBuffer( silence ).then(
             function( buffer ) {
-                sound1 = buffer;
+                var src = ctx.createBufferSource();
+                src.buffer = buffer;
+                src.connect( volumeControl );
+                node2 = src;
             },
             function() {
                 console.error( 'Shit happend', arguments );
@@ -90,11 +97,7 @@
         );
         
         d.getElementById("l1").addEventListener("click",function() {
-            var src = ctx.createBufferSource();
-            src.buffer = sound1;
-            src.connect( volumeControl );
-            src.start?src.start( 0 ):src.noteOn( 0 );
-            node2 = src;
+            node2.start?node2.start( 0 ):node2.noteOn( 0 );
         });
 
          getAudioBuffer( "samples/pulse.wav" ).then(
