@@ -18,6 +18,7 @@ define(["webaudio/sound"],function( Sound ) {
             window.oAudioContext || 
             window.msAudioContext
         )),
+        buffers = {},
         /**
          * Wrap the process of getting the sound as an array-buffer
          * into a `Promise`.
@@ -27,15 +28,19 @@ define(["webaudio/sound"],function( Sound ) {
          */
          getArrayBuffer = function( uri ) {
             return new RSVP.Promise( function( resolve, reject ) {
-
-                var client = new XMLHttpRequest( );
-                client.open( "GET", uri, true );
-                client.onload = function( ) {
-                    resolve( client.response );
-                };
-                client.responseType = "arraybuffer";
-                client.send();
-
+                
+                if ( buffers[uri] ) {
+                    resolve( buffers[uri] );
+                } else {
+                    var client = new XMLHttpRequest( );
+                    client.open( "GET", uri, true );
+                    client.onload = function( ) {
+                        buffers[uri] = client.response;
+                        resolve( client.response );
+                    };
+                    client.responseType = "arraybuffer";
+                    client.send();
+                }
             } );
         },
         /**
@@ -78,10 +83,8 @@ define(["webaudio/sound"],function( Sound ) {
         loadSound: function( url ) {
             return getAudioBuffer( url ).then(
                 function(buffer) {
-                    var ctx = getAudioContext(),
-                        node = ctx.createBufferSource();
-                    node.buffer = buffer;
-                    return new Sound(node, ctx);
+                    var ctx = getAudioContext();
+                    return new Sound(buffer, ctx);
                 }
             );
         }
