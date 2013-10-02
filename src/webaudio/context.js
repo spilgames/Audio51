@@ -110,8 +110,10 @@ define(["webaudio/sound"],function( Sound ) {
                 cleanup();
             },
             cleanup = function() {
-                while(eventtype = eventtypes.pop()){
+                eventtype = eventtypes.pop();
+                while(eventtype){
                     b.removeEventListener(eventtype, listener);
+                    eventtype = eventtypes.pop();
                 }
             }
         ;

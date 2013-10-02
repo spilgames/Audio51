@@ -1,5 +1,5 @@
 /*global describe, it, expect, afterEach, beforeEach, runs, spyOn */
-/*global waitsFor, xit, RSVP, console, AudioTestFramework */
+/*global waitsFor, xit, require, RSVP, console, AudioTestFramework */
 describe("The webaudio/context", function () {
     'use strict';
     
