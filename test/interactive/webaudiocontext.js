@@ -25,7 +25,12 @@ define("webaudiocontext/interactive/test1", ["webaudio/context"], function(conte
             console.warn(e);
         }
     );
-    
+
+    document.getElementById("p1").addEventListener("click", function(){
+        alert("This could trigger the sound to start working...");
+        return false;
+    });
+
     document.getElementById("l1").addEventListener("click", function(){
         saw.play();
     });

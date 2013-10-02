@@ -26,7 +26,7 @@ define(["webaudio/sound"],function( Sound ) {
          * @returns Promise
          * @resolves ArrayBuffer.
          */
-         getArrayBuffer = function( uri ) {
+        getArrayBuffer = function( uri ) {
             return new RSVP.Promise( function( resolve, reject ) {
                 
                 if ( buffers[uri] ) {
@@ -72,8 +72,56 @@ define(["webaudio/sound"],function( Sound ) {
             return getArrayBuffer( uri ).then( function( binaryData ) {
                 return createAudioBuffer( binaryData );
             } );
+        },
+        /**
+         * Create a tiny fraction of silence and play it, by calling this
+         * method on any user-interaction, the webaudio context will become
+         * unmuted on mobile iOS.
+         */
+        mobileUnMuteHack = function() {
+            var ctx = getAudioContext(),
+                //Smallest possible buffer, 1 sample, thus silence...
+                buffer = ctx.createBuffer(1,1,22050), 
+                bufferSource = ctx.createBufferSource();
+            
+            //console.log("unhacking the audiocontext");
+            bufferSource.buffer = buffer;
+            bufferSource.connect(ctx.destination);
+            if (bufferSource.start) {
+                bufferSource.start( 0 );
+            } else {
+                bufferSource.noteOn( 0 );
+            }
+            //todo: add it to the garbage-bin, to potentially protect the collection cycle.
         }
     ;
+
+    //Device is almost certainly a mobile device...
+    //if (typeof window.orientation !== 'undefined') {
+    (function(){
+        //Always doing this because it won't hurt devices that don't need it...
+        var eventtypes = ["touchstart","touchmove","touchenter","touchcancel","click","scroll"],
+            eventhandlers = [],
+            b = document.body,
+            i, eventtype, l = eventtypes.length,
+
+            listener = function() {
+                mobileUnMuteHack();
+                cleanup();
+            },
+            cleanup = function() {
+                while(eventtype = eventtypes.pop()){
+                    b.removeEventListener(eventtype, listener);
+                }
+            }
+        ;
+        
+        for (i = 0; i < l; ++i) {
+            eventtype = eventtypes[i];
+            b.addEventListener(eventtype, listener);
+        }
+    }());
+    //}
     
     return {
 
@@ -89,6 +137,6 @@ define(["webaudio/sound"],function( Sound ) {
             );
         }
 
-    }
+    };
 
 });
