@@ -51,6 +51,9 @@ var AudioTestFramework = ( function() {
         this.destination.connect(this.ctx.destination);
 
         var self = this;
+        this.destination.getVolumeAverage = function() {
+            return self.getVolumeAverage(true);
+        };
 
         /**
          * Audio constructor overwrite. This overwrite will tie the Audio-element
