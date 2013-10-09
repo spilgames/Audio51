@@ -72,12 +72,14 @@ var AudioTestFramework = ( function() {
             // More info: crbug.com/112368
             at.addEventListener("canplay", function() {
                 var an = getContext().createMediaElementSource( at );
+
                 console.log("connecting audio to context");
                 an.connect( self.destination );
                 at.pause();
                 at.audionode = an;
                 at.tc = self;
                 at.isConnected = true;
+                at.context = self;
             }, 0 );
 
             if ( url ) {
