@@ -11,10 +11,8 @@ define(["audiotag/sound"],function( Sound ) {
             var promise = new RSVP.Promise( function( resolve, reject ) {
 
                 var tag = new Audio();
-                tag.addEventListener( "canplay", function() {
-                    resolve( new Sound( tag ) );
-                } );
                 tag.src = url;
+                resolve( new Sound( tag ) );
 
             } );
             return promise;
