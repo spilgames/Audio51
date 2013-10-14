@@ -16,6 +16,7 @@
 
 describe("Audio Test Framework", function () {
     'use strict';
+
     
     var atf = new AudioTestFramework(),
         requestAnimationFrame = window.requestAnimationFrame||
@@ -57,7 +58,7 @@ describe("Audio Test Framework", function () {
 
     it("should detect sound is not playing", function () {
 
-        expect( atf.getVolumeAverage() ).toBe( 0 );
+        expect( AudioTestFramework.getVolumeAverage() ).toBe( 0 );
         expect( atf.isPlaying() ).toBeFalsy( );
 
     });
@@ -168,9 +169,10 @@ describe("Audio Test Framework", function () {
         
         runs(function () {
 
-            expect( atf.getVolumeAverage( true ) ).toBe( 0 );
+            expect( AudioTestFramework.getVolumeAverage( true ) ).toBe( 0 );
+            console.log("%c Loading new audio buffer!", "background: #222; color: #bada55");
             getAudioBuffer( "test/js/pulse.wav" ).then( function( buffer ) {
-                console.log('Sound is in tha house');
+                console.log('Sound is in tha house 1');
                 node = atf.createBufferSource();
                 node.buffer = buffer;
                 node.connect( atf.destination );
@@ -180,18 +182,18 @@ describe("Audio Test Framework", function () {
                     node.noteOn( 0 );
                 }
             }, function() {
-                console.log( "Failed to load sound :(", arguments );
+                console.warn( "Failed to load sound :(", arguments );
             } );
 
         });
         waitsFor(function () {
 
-            return node !== null && atf.getVolumeAverage( true ) > 0;
+            return node !== null && AudioTestFramework.getVolumeAverage( true ) > 0;
 
         }, "XHR request to finish", 500);
         runs(function () {
 
-            expect( atf.getVolumeAverage( true ) ).toBeGreaterThan( 0 );
+            expect( AudioTestFramework.getVolumeAverage( true ) ).toBeGreaterThan( 0 );
             if ( node.stop ) {
                 node.stop( 0 );
             } else {
@@ -224,7 +226,7 @@ describe("Audio Test Framework", function () {
         });
         waitsFor(function () {
 
-            return atf.isPlaying() || atf.getVolumeAverage( true ) > 0;
+            return atf.isPlaying() || AudioTestFramework.getVolumeAverage( true ) > 0;
 
         }, "sound to start playing", 250 );
         runs(function () {
@@ -236,7 +238,7 @@ describe("Audio Test Framework", function () {
         });
         waitsFor(function () {
 
-            return atf.getVolumeAverage( true ) === 0;
+            return AudioTestFramework.getVolumeAverage( true ) === 0;
 
         }, "sound to stop playing", 250 );
         runs(function () {

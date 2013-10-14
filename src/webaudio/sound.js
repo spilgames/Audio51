@@ -11,6 +11,7 @@ define(function() {
             var node = sound.context.createBufferSource();
             node.buffer = sound.buffer;
             sound.node = node;
+            node.connect(sound.context.destination);
             return node;
         }
     ;
@@ -18,7 +19,6 @@ define(function() {
     Sound.prototype = {
         play: function() {
             //Connect to speakers
-            this.node.connect(this.context.destination);
             if ( this.node.start ) {
                 this.node.start( 0 );
             } else {

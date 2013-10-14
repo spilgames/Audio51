@@ -1,12 +1,12 @@
 /*global define, RSVP*/
-define(["webaudio/sound"],function( Sound ) {
+define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
     'use strict';
 
     var getAudioContext = ( function( AC ){
             var ctx = null;
             
             return function() {
-                if ( ctx === null ) {
+                if ( ctx === null && AC ) {
                     ctx = new AC();
                 }
                 return ctx;
@@ -96,35 +96,8 @@ define(["webaudio/sound"],function( Sound ) {
         }
     ;
 
-    //Device is almost certainly a mobile device...
-    //if (typeof window.orientation !== 'undefined') {
-    (function(){
-        //Always doing this because it won't hurt devices that don't need it...
-        var eventtypes = ["touchstart","touchmove","touchenter","touchcancel","click","scroll"],
-            eventhandlers = [],
-            b = document.body,
-            i, eventtype, l = eventtypes.length,
+    Unrestrict.on("userInteraction", mobileUnMuteHack);
 
-            listener = function() {
-                mobileUnMuteHack();
-                cleanup();
-            },
-            cleanup = function() {
-                eventtype = eventtypes.pop();
-                while(eventtype){
-                    b.removeEventListener(eventtype, listener);
-                    eventtype = eventtypes.pop();
-                }
-            }
-        ;
-        
-        for (i = 0; i < l; ++i) {
-            eventtype = eventtypes[i];
-            b.addEventListener(eventtype, listener);
-        }
-    }());
-    //}
-    
     return {
 
         /**
@@ -137,6 +110,10 @@ define(["webaudio/sound"],function( Sound ) {
                     return new Sound(buffer, ctx);
                 }
             );
+        },
+        
+        canIUse: function() {
+            return getAudioContext() !== null;
         }
 
     };

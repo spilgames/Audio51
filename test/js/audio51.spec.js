@@ -1,6 +1,6 @@
 /*global describe, it, expect, afterEach, beforeEach, runs, spyOn, waitsFor, require */
 /*global AudioContext, console*/
-xdescribe("The Audio51 framework", function () {
+describe("The Audio51 framework", function () {
     'use strict';
     
     var context = null;
@@ -18,65 +18,47 @@ xdescribe("The Audio51 framework", function () {
 
     });
 
-    it("can load audio", function () {
-        var done = null;
+    it("can load a sound", function () {
+
+        var sound = null;
         
         runs(function () {
 
-            context.loadAudio("test/js/pulse.wav").then(
-                function(sprites) {
-                    done = sprites;
+            context.loadSound('test/js/pulse.wav').then(
+                function(s) {
+                    sound = s;
                 },
-                function(sprites) {
-                    done = false; //fail...
+                function(e) {
+                    sound = false;
+                    console.warn(e);
                 }
             );
 
         });
-
+        
         waitsFor(function () {
 
-            return done !== null;
+            return sound !== null;
 
-        }, "audio to load", 1000);
-
+        }, "sound to finish loading", 2000);
+        
         runs(function () {
 
-            console.log(done);
-            expect(Array.isArray(done)).toBeTruthy();
-            expect(done.length).toBeGreaterThan(0);
+            console.debug( sound );
+            expect( sound.play ).toBeTruthy( );
+            sound.play();
 
         });
-
-    });
-    
-    it("can play audio", function () {
-
-        var sprite = null;
-
-        runs(function () {
-
-            context.loadAudio("test/js/pulse.wav").then(
-                function(sprite) {
-                    sprite = sprite;
-                },
-                function(sprites) {
-                    sprite = false; //fail...
-                }
-            );
-
-        });
-
+        
         waitsFor(function () {
 
-            return sprite !== null;
+            return AudioTestFramework.getVolumeAverage() > 0;
 
-        }, "audio to load", 1000);
-
+        }, "sound to start playing", 2000);
+        
         runs(function () {
 
-            console.log(sprite);
-            expect( typeof sprite ).toBe("Sound");
+            sound.stop();
 
         });
 

@@ -1,5 +1,5 @@
 /*global define, RSVP*/
-define(function() {
+define(["unrestrict"],function(unrestrict) {
     'use strict';
     
     var /**
@@ -11,6 +11,18 @@ define(function() {
          */
         Sound = function( tag ) {
             this.tag = tag;
+            var self = this,
+                setup = function() {
+                    untangle( self );
+                    //unrestrict.off( "userInteraction", setup );
+                }
+            ;
+            unrestrict.on( "userInteraction", setup );
+            unrestrict.arm();
+        },
+        untangle = function( sound ) {
+            sound.tag.play();
+            sound.tag.pause();
         }
     ;
 

@@ -56,7 +56,7 @@ describe("The audiotag/context", function () {
         
         waitsFor(function () {
 
-            return sound.tag.context.getVolumeAverage() > 0;
+            return AudioTestFramework.getVolumeAverage() > 0;
 
         }, "sound to start playing", 2000);
         

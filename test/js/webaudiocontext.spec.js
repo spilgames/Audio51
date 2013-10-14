@@ -56,7 +56,7 @@ describe("The webaudio/context", function () {
         
         waitsFor(function () {
 
-            return sound.context.destination.getVolumeAverage() > 0;
+            return AudioTestFramework.getVolumeAverage() > 0;
 
         }, "sound to start playing", 2000);
         
