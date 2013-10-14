@@ -1,34 +1,20 @@
 /*global define, RSVP*/
-define(function() {
+define( ["webaudio/context","audiotag/context"], function(wac, atc) {
     'use strict';
 
     var getContext = ( function() {
             var ctx = null;
             
             return function() {
-                if ( ctx === null ) {
-                    ctx = new SimpleAudioContext();
+                if ( wac.canIUse() ) {
+                    ctx = wac;
+                } else {
+                    ctx = atc;
                 }
                 return ctx;
             };
         }())
     ;
-    
-    function SimpleAudioContext() {
-        console.log('Creating new context');
-    }
-    
-    SimpleAudioContext.prototype = {
-        loadAudio: function() {
-            var promise = new RSVP.Promise(function(resolve,reject){
-
-                resolve([]);
-
-            });
-            
-            return promise;
-        }
-    };
     
     return getContext();
 

@@ -6,7 +6,7 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
             var ctx = null;
             
             return function() {
-                if ( ctx === null ) {
+                if ( ctx === null && AC ) {
                     ctx = new AC();
                 }
                 return ctx;
@@ -110,6 +110,10 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
                     return new Sound(buffer, ctx);
                 }
             );
+        },
+        
+        canIUse: function() {
+            return getAudioContext() !== null;
         }
 
     };

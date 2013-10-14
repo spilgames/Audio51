@@ -29,8 +29,22 @@ var AudioTestFramework = ( function() {
             window.oAudioContext || 
             window.msAudioContext
         )),
+        getAnalyzer = ( function() {
+            
+            var analyzer = null;
+            
+            return function() {
+                if ( analyzer === null ) {
+                    analyzer = getContext().createAnalyser();
+                }
+                
+                return analyzer;
+            }
+            
+        }()),
         orgContext = window.AudioContext,
         OrgAudio = Audio,
+        lastContext = null,
         m
     ;
 
@@ -44,11 +58,13 @@ var AudioTestFramework = ( function() {
      * @constructor
      */
     function AudioContextWrapper() {
+        console.warn("Creating AudioContextWrapper!");
         this.ctx = getContext();
-        this.destination = this.ctx.createAnalyser();
+        this.destination = getAnalyzer();
         this.destination.smoothingTimeConstant = 0; //No delays, realtime
         this.destination.fftSize = 1024;
         this.destination.connect(this.ctx.destination);
+        lastContext = this;
 
         var self = this;
         this.destination.getVolumeAverage = function() {
@@ -96,30 +112,6 @@ var AudioTestFramework = ( function() {
             return this.ctx;
         },
         /**
-         * Attempts to get average output volume of all frequencies as
-         * reported by a RealtimeAnalyzerNode. Information gained lags
-         * a little, take this into account in unit-testing.
-         */
-        getVolumeAverage: function( override ) {
-            if ( !override && this.ctx.activeSourceCount === 0 ) {
-                return 0;
-            }
-            var values = 0,
-                array =  new Uint8Array(this.destination.frequencyBinCount),
-                length, average, i;
-
-            this.destination.getByteFrequencyData(array);
-            length = array.length;
-
-            // get all the frequency amplitudes
-            for (i = 0; i < length; ++i) {
-                values += array[i];
-            }
-     
-            average = values / length;
-            return average;
-        },
-        /**
          * isPlaying will return true if any source in the context is
          * attempting to produce sound. Nomatter if it is or is not
          * connected to the speakers.
@@ -128,6 +120,28 @@ var AudioTestFramework = ( function() {
             return this.ctx.activeSourceCount > 0;
         }
     };
+    
+    /**
+     * Attempts to get average output volume of all frequencies as
+     * reported by a RealtimeAnalyzerNode. Information gained lags
+     * a little, take this into account in unit-testing.
+     */
+    AudioContextWrapper.getVolumeAverage = function( override ) {
+        var values = 0,
+            array =  new Uint8Array(lastContext.destination.frequencyBinCount),
+            length, average, i;
+
+        lastContext.destination.getByteFrequencyData(array);
+        length = array.length;
+
+        // get all the frequency amplitudes
+        for (i = 0; i < length; ++i) {
+            values += array[i];
+        }
+ 
+        average = values / length;
+        return average;
+    }
 
     /**
      * Create pass-through methods for all methods on the real
