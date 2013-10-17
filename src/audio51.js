@@ -1,6 +1,18 @@
 /*global define, RSVP*/
 define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc, unrestrict) {
     'use strict';
+    
+    var fileTypes = {
+            //Safe format, but relatively large
+            'mp3': 'audio/mpeg',
+            //Chrome on Android can't seek in ogg (or so it appeared 2013-04-25)
+            //Bad support, small size though
+            'ogg': 'audio/ogg',
+            //Not always supported, but medium size
+            'ac3': 'audio/ac3'
+        },
+        soundSet = {}
+    ;
 
     return {
         /**
@@ -51,7 +63,42 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
                 //Return cached context
                 return ctx;
             };
-        }())
+        }()),
+        
+        loadSoundSet: function( uri, exts ) {
+            var client = new XMLHttpRequest( ),
+                self = this;
+
+            return new RSVP.Promise( function( resolve, reject ) {
+                
+                client.open( "GET", uri, true );
+                client.onload = function( ) {
+                    resolve( self.parseSoundSet( JSON.parse(client.response), exts ) );
+                };
+                client.send();
+
+            } );
+        },
+        
+        parseSoundSet: function( newSet, exts ) {
+            var tag = document.createElement('audio'),
+                i, ext, type;
+
+            soundSet = newSet;
+
+            console.log("%c Parsing new set of sounds!!", "background: #222; color: #bada55", newSet);
+            for (i = 0; i < exts.length; i++) {
+                ext = exts[i];
+                type = fileTypes[ext];
+                if (type && tag.canPlayType && tag.canPlayType(type)) {
+                    //break loop;
+                    i = exts.length;
+                }
+            }
+            
+            return soundSet;
+        }
+
     }
 
 });

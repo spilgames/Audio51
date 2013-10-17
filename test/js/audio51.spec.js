@@ -18,9 +18,9 @@ describe("The Audio51 framework", function () {
 
         waitsFor(function () {
 
-            return context !== null;
+            return context !== null && AudioTestFramework.getVolumeAverage() === 0;
 
-        }, "waiting for require to load up our context", 500);
+        }, "waiting for require to load up our context and silence to commense", 500);
         
         runs(function () {
 
@@ -83,39 +83,42 @@ describe("The Audio51 framework", function () {
 
             });
             
-            it("can load sprites", function () {
-
-                
-
-            });
-            
             it("can play a sprite", function () {
-
                 
+                var parsed = null;
+
+                runs(function () {
+
+                    audio51.loadSoundSet("test/js/testsprite.json", ["mp3","ogg"]).then(
+                        function( set ) {
+                            parsed = set;
+                        }
+                    );
+
+                });
+                
+                waitsFor(function () {
+
+                    return parsed !== null;
+
+                }, "sound-set to finish loading", 1000);
+                
+                runs(function () {
+
+                    expect( typeof parsed ).toBe( 'object' );
+                    audio51.play('saw');
+
+                });
+
+                waitsFor(function () {
+
+                    return AudioTestFramework.getVolumeAverage() > 0;
+
+                }, "sound to start playing", 1000);
 
             });
 
             it("can play multiple streams", function () {
-
-                
-
-            });
-            
-            it("can override existing stream, when only 1 stream is allowed", function () {
-
-                
-
-            });
-            
-            
-            it("can be configured to prefer existing sprite, when only 1 stream is allowed",
-                function () {
-
-                
-
-            });
-            
-            it("can determine which sound is preferred based on priority", function () {
 
                 
 
@@ -140,6 +143,27 @@ describe("The Audio51 framework", function () {
             });
 
         });
+
     }
+    
+    it("can override existing stream, when only 1 stream is allowed", function () {
+
+        
+
+    });
+    
+    
+    it("can be configured to prefer existing sprite, when only 1 stream is allowed",
+        function () {
+
+        
+
+    });
+    
+    it("can determine which sound is preferred based on priority", function () {
+
+        
+
+    });
     
 });
