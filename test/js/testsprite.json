@@ -1,8 +1,8 @@
 {
   "resources": [
-    "testsprite.ac3",
-    "testsprite.mp3",
-    "testsprite.ogg"
+    "test/js/testsprite.ac3",
+    "test/js/testsprite.mp3",
+    "test/js/testsprite.ogg"
   ],
   "spritemap": {
     "pulse": {

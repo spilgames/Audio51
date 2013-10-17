@@ -24,7 +24,9 @@
         "test/bootstrap.js",
         "liblocal/*.js",
         "src/testframework.js",
+        "test/js/**/*.json",
         "test/js/**/*.mp3",
+        "test/js/**/*.ogg",
         "test/js/**/*.js"
     ],
     "watch_files": [
