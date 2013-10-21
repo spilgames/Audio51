@@ -18,27 +18,26 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
             return function( override ) {
                 if ( override ) {
 
-                    console.warn( "Returning override context type", override );
                     switch (override) {
-                        case 2:
-                            ctx = atc
-                            break;
+                    case 2:
+                        ctx = atc;
+                        break;
 
-                        default:
-                            ctx = wac
-                            break;
+                    default:
+                        ctx = wac;
+                        break;
                     }
 
                 } else if (ctx === null) {
 
-                    console.warn( "Determining context type by browser capability!!" );
                     //If WebAudio API is available it should be used
                     if ( wac.canIUse() ) {
                         //WebAudio API has internal 'arming' so mobile and desktop are the same
                         ctx = wac;
                     } else {
 
-                        //Check for touch, touch probably means mobile, acceptable margin of error
+                        //Check for touch, touch probably means mobile,
+                        //acceptable margin of error
                         if ( unrestrict.isTouch() ) {
                             ctx = atc; //TODO: Load restricted set (audiosprite)
                         } else {
@@ -108,7 +107,6 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
 
             soundSet = newSet;
             
-            console.log("%c Parsing new set of sounds!!", "background: #222; color: #bada55", newSet);
             for ( i = 0; i < newSet.resources.length; ++i ) {
                 url = newSet.resources[i];
                 baseUrl = url.substr( 0, url.lastIndexOf(".") );
@@ -118,7 +116,6 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
                     break;
                 }
             }
-            console.log("%c Intermediate parsing results!!", "background: #222; color: #bada55", baseUrl, ext, type);
 
             return getContext().parse( newSet, baseUrl, ext );
         },
@@ -129,6 +126,6 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
 
         }
 
-    }
+    };
 
 });

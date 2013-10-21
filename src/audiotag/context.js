@@ -18,7 +18,6 @@ define(["audiotag/sound"],function( Sound ) {
         addSound = function( id, url ) {
             return loadSound( url ).then( function( sound ) {
                 sounds[id] = sound;
-                console.log( "Finished loading",  sound );
                 return sound;
             } );
         }
@@ -43,7 +42,6 @@ define(["audiotag/sound"],function( Sound ) {
                 all.push( addSound( spriteName, url ) );
             }
     
-            console.log(all);
             return RSVP.all( all );
         },
         

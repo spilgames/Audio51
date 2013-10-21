@@ -80,7 +80,7 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
          * unmuted on mobile iOS.
          */
         mobileUnMuteHack = function() {
-            var ctx = new AudioTestFramework().getContext(),
+            var ctx = getAudioContext(),
                 //Smallest possible buffer, 1 sample, thus silence...
                 buffer = ctx.createBuffer(1,1,22050), 
                 bufferSource = ctx.createBufferSource();
@@ -106,7 +106,6 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
         addSound = function( id, url ) {
             return loadSound( url ).then( function( sound ) {
                 sounds[id] = sound;
-                console.log( "Finished loading",  sound );
                 return sound;
             } );
         }
@@ -133,7 +132,6 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
                 all.push( addSound( spriteName, url ) );
             }
 
-            console.log(all);
             return RSVP.all( all );
         },
         
