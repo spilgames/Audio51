@@ -132,6 +132,16 @@ describe("The Audio51 framework", function () {
 
         });
 
+        it("restricted audiotag context", function () {
+
+            runs(function () {
+
+                context = audio51.getContext( 3 );
+
+            });
+
+        });
+
         afterEach( function () {
 
             var parsed = null,
