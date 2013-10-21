@@ -1,8 +1,10 @@
+/*global define, RSVP*/
 /**
- * This class contains what is needed to work with and detect mobile devices. As such it contains
- * code to 'arm' the audio.
- * It will also contain all utility methods required for working with mobile devices, such as
- * `isTouch()`.
+ * This class contains what is needed to work with and detect mobile devices. As
+ * such it contains code to 'arm' the audio.
+ * 
+ * It will also contain all utility methods required for working with mobile
+ * devices, such as `isTouch()`.
  * 
  */
 define(function() {
@@ -28,16 +30,22 @@ define(function() {
         },
         unrestrict = {
             /**
-             * This 'arms' the event-listeners that are legal for triggering audio. This is used
-             * internally to 'unlock' audio on mobile devices. It is exposed so that any developer
-             * can 'arm' the listeners when a new audio-file is loading.
-             * If you want to react to the event that is triggered on legal user-interaction you
-             * should register a listener for 'userInteraction' on the unrestrict instance. You
-             * should also be aware that all these listeners are cleared upon the first successful
-             * invocation. (Which is a cheap way to prevent accidental double-fires)
+             * This 'arms' the event-listeners that are legal for triggering
+             * audio. This is used internally to 'unlock' audio on mobile
+             * devices. It is exposed so that any developer can 'arm' the
+             * listeners when a new audio-file is loading.
+             * 
+             * If you want to react to the event that is triggered on legal
+             * user-interaction you should register a listener for
+             * 'userInteraction' on the unrestrict instance. You should also be
+             * aware that all these listeners are cleared upon the first
+             * successful invocation. (Which is a cheap way to prevent
+             * accidental double-fires)
              */
             arm: function() {
-                if (eventhandlers.length > 0) return; //Already armed
+                if (eventhandlers.length > 0) {
+                    return; //Already armed
+                }
                 for (i = 0; i < l; ++i) {
                     eventtype = eventtypes[i];
                     b.addEventListener(eventtype, listener);
@@ -49,12 +57,13 @@ define(function() {
              * longer is, the need has also dissipated.
              */
             isTouch: ( function() {
-                //from http://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-a-touch-screen-device-using-javascript
+                //from http://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-
+                //a-touch-screen-device-using-javascript
                 var isTouch = (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 
                 return function() {
                     return isTouch;
-                }
+                };
             }())
         }
     ;

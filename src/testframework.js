@@ -14,14 +14,19 @@ var AudioTestFramework = ( function() {
     "use strict";
 
     var getContext = ( function( AC ){
-            var ctx = null;
+            var ctx = null,
+                get = function() {
+                    if ( ctx === null ) {
+                        ctx = new AC();
+                    }
+                    return ctx;
+                };
             
-            return function() {
-                if ( ctx === null ) {
-                    ctx = new AC();
-                }
-                return ctx;
+            get.reset = function() {
+                ctx = null;
             };
+            
+            return get;
         }(
             window.AudioContext || 
             window.webkitAudioContext || 
@@ -31,15 +36,23 @@ var AudioTestFramework = ( function() {
         )),
         getAnalyzer = ( function() {
             
-            var analyzer = null;
-            
-            return function() {
-                if ( analyzer === null ) {
-                    analyzer = getContext().createAnalyser();
+            var analyzer = null,
+                get = function() {
+                    if ( analyzer === null ) {
+                        analyzer = getContext().createAnalyser();
+                        analyzer.smoothingTimeConstant = 0; //No delays, realtime
+                        analyzer.fftSize = 1024;
+                    }
+                    
+                    return analyzer;
                 }
-                
-                return analyzer;
-            }
+            ;
+            
+            get.reset = function() {
+                analyzer = null;
+            };
+            
+            return get;
             
         }()),
         orgContext = window.AudioContext,
@@ -61,15 +74,10 @@ var AudioTestFramework = ( function() {
         console.warn("Creating AudioContextWrapper!");
         this.ctx = getContext();
         this.destination = getAnalyzer();
-        this.destination.smoothingTimeConstant = 0; //No delays, realtime
-        this.destination.fftSize = 1024;
-        this.destination.connect(this.ctx.destination);
+        this.destination.connect(getContext().destination);
         lastContext = this;
 
         var self = this;
-        this.destination.getVolumeAverage = function() {
-            return self.getVolumeAverage(true);
-        };
 
         /**
          * Audio constructor overwrite. This overwrite will tie the Audio-element
@@ -102,6 +110,7 @@ var AudioTestFramework = ( function() {
                 at.src = url;
             }
 
+            lastContext = at;
             return at;
         };
 
@@ -128,10 +137,10 @@ var AudioTestFramework = ( function() {
      */
     AudioContextWrapper.getVolumeAverage = function( override ) {
         var values = 0,
-            array =  new Uint8Array(lastContext.destination.frequencyBinCount),
+            array =  new Uint8Array(getAnalyzer().frequencyBinCount),
             length, average, i;
 
-        lastContext.destination.getByteFrequencyData(array);
+        getAnalyzer().getByteFrequencyData(array);
         length = array.length;
 
         // get all the frequency amplitudes
@@ -141,7 +150,12 @@ var AudioTestFramework = ( function() {
  
         average = values / length;
         return average;
-    }
+    };
+    
+    AudioContextWrapper.reset = function() {
+        getAnalyzer.reset();
+        lastContext.destination = getAnalyzer();
+    };
 
     /**
      * Create pass-through methods for all methods on the real

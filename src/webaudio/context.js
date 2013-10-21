@@ -19,6 +19,7 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
             window.msAudioContext
         )),
         buffers = {},
+        sounds = {},
         /**
          * Wrap the process of getting the sound as an array-buffer
          * into a `Promise`.
@@ -93,6 +94,20 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
                 bufferSource.noteOn( 0 );
             }
             //todo: add it to the garbage-bin, to potentially protect the collection cycle.
+        },
+        loadSound = function( url ) {
+            return getAudioBuffer( url ).then(
+                function(buffer) {
+                    var ctx = getAudioContext();
+                    return new Sound(buffer, ctx);
+                }
+            );
+        },
+        addSound = function( id, url ) {
+            return loadSound( url ).then( function( sound ) {
+                sounds[id] = sound;
+                return sound;
+            } );
         }
     ;
 
@@ -104,16 +119,33 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
          * Load a sound-buffer and create a `Sound` object.
          */
         loadSound: function( url ) {
-            return getAudioBuffer( url ).then(
-                function(buffer) {
-                    var ctx = getAudioContext();
-                    return new Sound(buffer, ctx);
-                }
-            );
+            return loadSound( url );
+        },
+        
+        parse: function( soundSet, baseUrl, ext ) {
+            var i = 0,
+                all = [],
+                spriteName, url;
+
+            for (spriteName in soundSet.spritemap) {
+                url = baseUrl + "_00" + (++i) + "." + ext;
+                all.push( addSound( spriteName, url ) );
+            }
+
+            return RSVP.all( all );
         },
         
         canIUse: function() {
             return getAudioContext() !== null;
+        },
+        
+        play: function( id ) {
+            var sound = null;
+            if (sounds[id]) {
+                sound = sounds[id];
+                sound.play();
+            }
+            return sound;
         }
 
     };

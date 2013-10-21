@@ -1,0 +1,19 @@
+{
+  "resources": [
+    "test/js/testsprite.mp3",
+    "test/js/testsprite.ogg",
+    "test/js/testsprite.ac3"
+  ],
+  "spritemap": {
+    "pulse": {
+      "start": 0,
+      "end": 1,
+      "loop": false
+    },
+    "saw": {
+      "start": 2,
+      "end": 3,
+      "loop": false
+    }
+  }
+}
