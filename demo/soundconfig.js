@@ -4,20 +4,20 @@
  */
 require(["audio51"], function(audio51) {
     
-    var boom = null,
+    var sounds = [],
         l1 = document.getElementById("l1"),
         l2 = document.getElementById("l2");
 
     audio51.loadSoundSet('sounds.json');
     
     function stop() {
-        if (boom) {
-            boom.stop();
+        while (sounds.length) {
+            sounds.pop().stop();
         }
     }
     
     function start() {
-        boom = audio51.play("thunder");
+        sounds.push(audio51.play("thunder"));
     }
     
     function addListeners(type) {
