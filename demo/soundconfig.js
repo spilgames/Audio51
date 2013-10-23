@@ -8,6 +8,7 @@ require(["audio51"], function(audio51) {
         l1 = document.getElementById("l1"),
         l2 = document.getElementById("l2");
 
+    audio51.getContext( audio51.AUDIOTAG );
     audio51.loadSoundSet('sounds.json');
     
     function stop() {

@@ -8,7 +8,7 @@ define(["audiotag/sound"],function( Sound ) {
     
                 var tag = new Audio();
                 tag.addEventListener( "canplay", function() {
-                    resolve( new Sound( tag ) );
+                    resolve( Sound( tag ) );
                 } );
                 tag.src = url;
     
@@ -26,7 +26,7 @@ define(["audiotag/sound"],function( Sound ) {
     return {
 
         /**
-         * Load a sound-buffer and create a `Sound` object.
+         * Load a sound-tag and create a `Sound` object.
          */
         loadSound: function( url ) {
             return loadSound( url );
@@ -48,7 +48,8 @@ define(["audiotag/sound"],function( Sound ) {
         play: function( id ) {
             var sound = null;
             if (sounds[id]) {
-                sound = sounds[id];
+                sound = sounds[id]
+                sounds[id] = Sound( sound.tag.cloneNode() );
                 sound.play();
             }
             return sound;

@@ -49,7 +49,6 @@ describe("The audiotag/context", function () {
         runs(function () {
 
             console.debug( sound );
-            expect( sound instanceof Sound ).toBe( true );
             sound.play();
 
         });
