@@ -64,6 +64,9 @@ define(
     ;
 
     return {
+        RESTRICTED: 3,
+        AUDIOTAG: 2,
+        WEBAUDIO: 1,
         /**
          * Get an `AudioContext` audio51 style. This method will figure out which scenario fits
          * the current environment best. In case you find a use-case where you need to overrule

@@ -116,7 +116,7 @@ describe("The Audio51 framework", function () {
 
             runs(function () {
 
-                context = audio51.getContext( 1 );
+                context = audio51.getContext( audio51.WEBAUDIO );
 
             });
 
@@ -126,7 +126,7 @@ describe("The Audio51 framework", function () {
 
             runs(function () {
 
-                context = audio51.getContext( 2 );
+                context = audio51.getContext( audio51.AUDIOTAG );
 
             });
 
@@ -136,7 +136,7 @@ describe("The Audio51 framework", function () {
 
             runs(function () {
 
-                context = audio51.getContext( 3 );
+                context = audio51.getContext( audio51.RESTRICTED );
 
             });
 
@@ -191,31 +191,31 @@ describe("The Audio51 framework", function () {
 
     it("can play multiple streams", function () {
 
-        
+        expect( "Not Yet Implemented" ).toBe( false );
 
     });
 
     it("can do fade-in", function () {
 
-        
+        expect( "Not Yet Implemented" ).toBe( false );
 
     });
     
     it("can do fade-out", function () {
 
-        
+        expect( "Not Yet Implemented" ).toBe( false );
 
     });
     
     it("can do cross-fade", function () {
 
-        
+        expect( "Not Yet Implemented" ).toBe( false );
 
     });
 
     it("can override existing stream, when only 1 stream is allowed", function () {
 
-        
+        expect( "Not Yet Implemented" ).toBe( false );
 
     });
     
@@ -223,13 +223,13 @@ describe("The Audio51 framework", function () {
     it("can be configured to prefer existing sprite, when only 1 stream is allowed",
         function () {
 
-        
+        expect( "Not Yet Implemented" ).toBe( false );
 
     });
     
     it("can determine which sound is preferred based on priority", function () {
 
-        
+        expect( "Not Yet Implemented" ).toBe( false );
 
     });
     
