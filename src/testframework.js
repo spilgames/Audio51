@@ -55,6 +55,25 @@ var AudioTestFramework = ( function() {
             return get;
             
         }()),
+        connectAudio = function( at, context ) {
+
+            var an = getContext().createMediaElementSource( at );
+    
+            console.log("connecting audio to context");
+            an.connect( context.destination );
+            at.pause();
+            at.audionode = an;
+            at.tc = context;
+            at.isConnected = true;
+            at.context = context;
+            at.orgClone = at.cloneNode;
+            at.cloneNode = function() {
+                var newTag = at.orgClone();
+                connectAudio( newTag, context );
+                return newTag;
+            }
+
+        },
         orgContext = window.AudioContext,
         OrgAudio = Audio,
         lastContext = null,
@@ -95,15 +114,7 @@ var AudioTestFramework = ( function() {
             // for a known bug.
             // More info: crbug.com/112368
             at.addEventListener("canplay", function() {
-                var an = getContext().createMediaElementSource( at );
-
-                console.log("connecting audio to context");
-                an.connect( self.destination );
-                at.pause();
-                at.audionode = an;
-                at.tc = self;
-                at.isConnected = true;
-                at.context = self;
+                connectAudio( at, self );
             }, 0 );
 
             if ( url ) {
