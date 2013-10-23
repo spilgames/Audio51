@@ -7,18 +7,26 @@ require(["audio51"], function(audio51) {
     var sounds = [],
         l1 = document.getElementById("l1"),
         l2 = document.getElementById("l2");
+    
+    window.audio51 = audio51;
 
-    audio51.getContext( audio51.AUDIOTAG );
+    //audio51.getContext( audio51.RESTRICTED );
     audio51.loadSoundSet('sounds.json');
     
-    function stop() {
+    function stop(event) {
         while (sounds.length) {
             sounds.pop().stop();
         }
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
     }
     
-    function start() {
+    function start(event) {
         sounds.push(audio51.play("thunder"));
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
     }
     
     function addListeners(type) {
@@ -36,8 +44,10 @@ require(["audio51"], function(audio51) {
         document.documentElement.removeEventListener("click", addClick);
     }
 
-    document.getElementById("a1").addEventListener("click", function(){
+    document.getElementById("a1").addEventListener("click", function(event){
         document.getElementById("playnow").className += " hide";
+        event.preventDefault();
+        event.stopPropagation();
         return false;
     });
 

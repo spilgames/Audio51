@@ -13,7 +13,9 @@ define(["audiotag/context", "audiotag/sprite"],function( Context, Sprite ) {
          * must continue, false if it is finished.
          */
         animationScope = function (scope, callback) {
-            var rafID = null;
+            var rafID = null,
+                requestAnimationFrame = window.requestAnimationFrame||webkitRequestAnimationFrame,
+                cancelAnimationFrame = window.cancelAnimationFrame||webkitCancelRequestAnimationFrame;
     
             function animationFrame () {
                 if (callback(scope)) {
