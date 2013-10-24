@@ -18,7 +18,8 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
             window.oAudioContext || 
             window.msAudioContext
         )),
-        buffers = {},
+        arrayBuffers = {},
+        audioBuffers = {},
         sounds = {},
         /**
          * Wrap the process of getting the sound as an array-buffer
@@ -30,13 +31,13 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
         getArrayBuffer = function( uri ) {
             return new RSVP.Promise( function( resolve, reject ) {
                 
-                if ( buffers[uri] ) {
-                    resolve( buffers[uri] );
+                if ( arrayBuffers[uri] ) {
+                    resolve( arrayBuffers[uri] );
                 } else {
                     var client = new XMLHttpRequest( );
                     client.open( "GET", uri, true );
                     client.onload = function( ) {
-                        buffers[uri] = client.response;
+                        arrayBuffers[uri] = client.response;
                         resolve( client.response );
                     };
                     client.responseType = "arraybuffer";
@@ -97,16 +98,19 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
         },
         loadSound = function( url ) {
             return getAudioBuffer( url ).then(
-                function(buffer) {
+                function( buffer ) {
                     var ctx = getAudioContext();
-                    return new Sound(buffer, ctx);
+                    audioBuffers[encodeURIComponent(url)] = buffer;
+                    return Sound( buffer, ctx );
                 }
             );
         },
         addSound = function( id, url ) {
             return loadSound( url ).then( function( sound ) {
-                sounds[id] = sound;
+                sounds[id] = encodeURIComponent(url);
                 return sound;
+            }, function() {
+                console.warn( arguments );
             } );
         }
     ;
@@ -142,7 +146,7 @@ define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
         play: function( id ) {
             var sound = null;
             if (sounds[id]) {
-                sound = sounds[id];
+                sound = Sound( audioBuffers[sounds[id]], getAudioContext() );
                 sound.play();
             }
             return sound;

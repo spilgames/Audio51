@@ -9,38 +9,51 @@ define(["unrestrict"],function(unrestrict) {
          * @author martin.reurings
          * @constructor
          */
-        Sound = function( tag ) {
-            this.tag = tag;
-            var self = this,
-                setup = function() {
-                    untangle( self );
-                    //unrestrict.off( "userInteraction", setup );
+        Sound = function( tag, untangled ) {
+            var setup = function() {
+                    untangle( tag );
                 }
             ;
-            unrestrict.on( "userInteraction", setup );
-            unrestrict.arm();
+            if (!untangled) {
+                unrestrict.on( "userInteraction", setup );
+                unrestrict.arm();
+            }
+            
+            return{
+                play: function() {
+                    play( tag );
+                },
+                stop: function() {
+                    stop( tag );
+                },
+                getLength: function() {
+                    return getLength( tag );
+                },
+                loop: function( value ) {
+                    loop( tag, value );
+                },
+                tag: tag //a little evil, but allows re-use by restricted context.
+            };
+
         },
-        untangle = function( sound ) {
-            sound.tag.play();
-            sound.tag.pause();
+        untangle = function( tag ) {
+            tag.play();
+            tag.pause();
+        },
+        play = function( tag ) {
+            tag.play();
+        },
+        stop = function( tag ) {
+            tag.pause();
+            tag.currentTime = 0;
+        },
+        getLength = function( tag ) {
+            return tag.duration;
+        },
+        loop = function( tag, value ) {
+            tag.loop = value;
         }
     ;
-
-    Sound.prototype = {
-        play: function() {
-            this.tag.play();
-        },
-        stop: function() {
-            this.tag.pause();
-            this.tag.currentTime = 0;
-        },
-        getLength: function() {
-            return this.tag.duration;
-        },
-        loop: function(value) {
-            this.tag.loop = value;
-        }
-    };
 
     return Sound;
 

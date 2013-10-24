@@ -3,46 +3,54 @@ define(function() {
     'use strict';
     
     var Sound = function( buffer, ctx ) {
-            this.buffer = buffer;
-            this.context = ctx;
-            createBufferSource( this );
-        },
-        createBufferSource = function( sound ) {
-            var node = sound.context.createBufferSource();
-            node.buffer = sound.buffer;
-            sound.node = node;
-            node.connect(sound.context.destination);
-            return node;
-        }
-    ;
-
-    Sound.prototype = {
-        play: function() {
-            //Connect to speakers
-            if ( this.node.start ) {
-                this.node.start( 0 );
-            } else {
-                this.node.noteOn( 0 );
+            var n = createBufferSource( buffer, ctx );
+            return {
+                play: function() {
+                    play( n );
+                },
+                stop: function() {
+                    n = stop( n, buffer, ctx );
+                },
+                getLength: function() {
+                    return getLength( n );
+                },
+                loop: function( value ) {
+                    loop( n, value );
+                }
             }
         },
-        stop: function() {
-            if ( this.node.stop ) {
-                this.node.stop( 0 );
+        createBufferSource = function( buffer, context ) {
+            var node = context.createBufferSource();
+            node.buffer = buffer;
+            node.connect(context.destination);
+            return node;
+        },
+        play = function( node ) {
+            //Connect to speakers
+            if ( node.start ) {
+                node.start( 0 );
             } else {
-                this.node.noteOff( 0 );
+                node.noteOn( 0 );
+            }
+        },
+        stop = function( node, buffer, ctx ) {
+            if ( node.stop ) {
+                node.stop( 0 );
+            } else {
+                node.noteOff( 0 );
             }
             //Disconnect from speakers, allow garbage collection
-            this.node.disconnect();
+            node.disconnect();
             //Create new buffersource so we can fire this sound again
-            createBufferSource( this );
+            return createBufferSource( buffer, ctx );
         },
-        getLength: function() {
-            return this.node.buffer.length / this.node.buffer.sampleRate;
+        getLength = function( node ) {
+            return node.buffer.length / node.buffer.sampleRate;
         },
-        loop: function(value) {
-            this.node.loop = value;
+        loop = function( node, value ) {
+            node.loop = value;
         }
-    };
+    ;
 
     return Sound;
 

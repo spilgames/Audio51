@@ -1,5 +1,10 @@
 /*global define, RSVP*/
-define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc, unrestrict) {
+define( 
+    ["webaudio/context",
+     "audiotag/context",
+     "audiotag/restricted",
+     "unrestrict"],
+    function(wac, atc, ratc, unrestrict) {
     'use strict';
     
     var fileTypes = {
@@ -19,6 +24,10 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
                 if ( override ) {
 
                     switch (override) {
+                    case 3:
+                        ctx = ratc;
+                        break;
+
                     case 2:
                         ctx = atc;
                         break;
@@ -39,7 +48,7 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
                         //Check for touch, touch probably means mobile,
                         //acceptable margin of error
                         if ( unrestrict.isTouch() ) {
-                            ctx = atc; //TODO: Load restricted set (audiosprite)
+                            ctx = ratc;
                         } else {
                             ctx = atc;
                         }
@@ -55,6 +64,9 @@ define( ["webaudio/context","audiotag/context","unrestrict"], function(wac, atc,
     ;
 
     return {
+        RESTRICTED: 3,
+        AUDIOTAG: 2,
+        WEBAUDIO: 1,
         /**
          * Get an `AudioContext` audio51 style. This method will figure out which scenario fits
          * the current environment best. In case you find a use-case where you need to overrule
