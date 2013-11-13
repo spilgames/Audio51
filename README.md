@@ -1,6 +1,8 @@
 # Audio51, a no-nonsense solution for Audio in HTML5
 
-## Get Started
+## Audio51 is copyrighted by SpilGames and can only be used by us and our HTML5 partners, which we have given explicit permission to use it, and only for the purpose of creating games for SpilGames.
+
+### Get Started
 
 1. Current implementation requires the use of an [AMD compatible][1] library. The most popular one (as far as I can tell) would be [requirejs][2]. So, until Audio51 has been refactored, this is a requirement.
 
@@ -29,7 +31,7 @@ require(["unrestrict"], function(unrestrict) {
 
 This document is intended to be an up to date affair, so check back often to see if any improvements to the library have made it even easier to use!
 
-## Unit testing
+### Unit testing
 
 Currently there are still some bugs in the WebAudio API implmentation. Some of these came up while attempting to create an easy to use unit-testing environment. Most notably:
 
