@@ -1,6 +1,6 @@
 # Audio51, a no-nonsense solution for Audio in HTML5
 
-## Audio51 is copyrighted by SpilGames and can only be used by us and our HTML5 partners, which we have given explicit permission to use it, and only for the purpose of creating games for SpilGames.
+--- Audio51 is copyrighted by SpilGames and can only be used by us and our HTML5 partners, which we have given explicit permission to use it, and only for the purpose of creating games for SpilGames. ---
 
 ### Get Started
 
