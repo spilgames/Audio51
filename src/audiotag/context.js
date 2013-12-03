@@ -1,4 +1,10 @@
 /*global define, RSVP*/
+/*
+ *  @module Context
+ *  @copyright (C) 2013 SpilGames
+ *  @author Martin Reurings
+ *  @license BSD 3-Clause License (see LICENSE file in project root)
+ */
 define(["audiotag/sound"],function( Sound ) {
     'use strict';
 

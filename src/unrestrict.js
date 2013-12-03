@@ -1,4 +1,10 @@
 /*global define, RSVP*/
+/*
+ *  @module Unrestrict
+ *  @copyright (C) 2013 SpilGames
+ *  @author Martin Reurings
+ *  @license BSD 3-Clause License (see LICENSE file in project root)
+ */
 /**
  * This class contains what is needed to work with and detect mobile devices. As
  * such it contains code to 'arm' the audio.

@@ -1,6 +1,12 @@
 /*global console */
 /*jshint -W020*/ //ignore 'Read only' warning for overwriting Audio
 /*jshint -W083*/ //ignore 'Don't create functions in loops'
+/*
+ *  @module Testframework
+ *  @copyright (C) 2013 SpilGames
+ *  @author Martin Reurings
+ *  @license BSD 3-Clause License (see LICENSE file in project root)
+ */
 /**
  * Test framework for testing audio-based code. This is no more, or less, than
  * a mock class for the AudioContext of the WebAudio API. Well, a little more,

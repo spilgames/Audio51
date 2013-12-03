@@ -1,4 +1,10 @@
 /*global define, RSVP, requestAnimationFrame, cancelAnimationFrame*/
+/*
+ *  @module Restricted
+ *  @copyright (C) 2013 SpilGames
+ *  @author Martin Reurings
+ *  @license BSD 3-Clause License (see LICENSE file in project root)
+ */
 define(["audiotag/context", "audiotag/sprite"],function( Context, Sprite ) {
     'use strict';
 
