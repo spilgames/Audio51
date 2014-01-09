@@ -149,11 +149,11 @@ define(["audio51/webaudio/sound", "audio51/unrestrict"],function( Sound, Unrestr
             return getAudioContext() !== null;
         },
         
-        play: function( id ) {
+        play: function( id, volume ) {
             var sound = null;
             if (sounds[id]) {
                 sound = Sound( audioBuffers[sounds[id]], getAudioContext() );
-                sound.play();
+                sound.play( volume );
             }
             return sound;
         }
