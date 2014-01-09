@@ -5,7 +5,7 @@
  *  @author Martin Reurings
  *  @license BSD 3-Clause License (see LICENSE file in project root)
  */
-define(["webaudio/sound", "unrestrict"],function( Sound, Unrestrict ) {
+define(["audio51/webaudio/sound", "audio51/unrestrict"],function( Sound, Unrestrict ) {
     'use strict';
 
     var getAudioContext = ( function( AC ){

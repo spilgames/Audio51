@@ -1,3 +1,6 @@
 requirejs.config({
-    baseUrl: '../src'
+    baseUrl: '../src',
+	paths: {
+		audio51: '.'
+	}
 });

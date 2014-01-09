@@ -5,7 +5,7 @@
  *  @author Martin Reurings
  *  @license BSD 3-Clause License (see LICENSE file in project root)
  */
-define(["audiotag/context", "audiotag/sprite"],function( Context, Sprite ) {
+define(["audio51/audiotag/context", "audio51/audiotag/sprite"],function( Context, Sprite ) {
     'use strict';
 
     var sprites = {},

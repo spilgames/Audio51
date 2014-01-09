@@ -5,7 +5,7 @@
  *  @author Martin Reurings
  *  @license BSD 3-Clause License (see LICENSE file in project root)
  */
-define(["audiotag/sound"],function( Sound ) {
+define(["audio51/audiotag/sound"],function( Sound ) {
     'use strict';
 
     var sounds = {},

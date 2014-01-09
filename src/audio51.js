@@ -5,11 +5,11 @@
  *  @author Martin Reurings
  *  @license BSD 3-Clause License (see LICENSE file in project root)
  */
-define( 
-    ["webaudio/context",
-     "audiotag/context",
-     "audiotag/restricted",
-     "unrestrict"],
+define(
+    ["audio51/webaudio/context",
+     "audio51/audiotag/context",
+     "audio51/audiotag/restricted",
+     "audio51/unrestrict"],
     function(wac, atc, ratc, unrestrict) {
     'use strict';
     
