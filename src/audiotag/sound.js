@@ -5,7 +5,7 @@
  *  @author Martin Reurings
  *  @license BSD 3-Clause License (see LICENSE file in project root)
  */
-define(["unrestrict"],function(unrestrict) {
+define(["audio51/unrestrict"],function(unrestrict) {
     'use strict';
     
     var /**

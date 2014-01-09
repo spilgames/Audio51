@@ -2,7 +2,7 @@
 /**
  * Soundset generated using `audiosprite -p mp3,ogg,ac3 -o sounds -e mp3,ogg,ac3 -c 2 *.ogg`
  */
-require(["audio51"], function(audio51) {
+require(["audio51/audio51"], function(audio51) {
     
     var sounds = [],
         l1 = document.getElementById("l1"),
