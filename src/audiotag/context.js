@@ -51,12 +51,12 @@ define(["audio51/audiotag/sound"],function( Sound ) {
             return RSVP.all( all );
         },
         
-        play: function( id ) {
+        play: function( id, volume ) {
             var sound = null;
             if (sounds[id]) {
                 sound = sounds[id]
                 sounds[id] = Sound( sound.tag.cloneNode() );
-                sound.play();
+                sound.play( volume );
             }
             return sound;
         }

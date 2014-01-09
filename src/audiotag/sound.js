@@ -26,7 +26,10 @@ define(["audio51/unrestrict"],function(unrestrict) {
             }
             
             return{
-                play: function() {
+                play: function( volume ) {
+                    if (volume !== void 0) {
+                        setVolume( volume );
+                    }
                     play( tag );
                 },
                 stop: function() {
@@ -37,6 +40,12 @@ define(["audio51/unrestrict"],function(unrestrict) {
                 },
                 loop: function( value ) {
                     loop( tag, value );
+                },
+                setVolume: function ( value ) {
+                    setVolume( value );
+                },
+                getVolume: function () {
+                    return getVolume();
                 },
                 tag: tag //a little evil, but allows re-use by restricted context.
             };
@@ -58,6 +67,12 @@ define(["audio51/unrestrict"],function(unrestrict) {
         },
         loop = function( tag, value ) {
             tag.loop = value;
+        },
+        setVolume = function( value ) {
+            tag.volume = value;
+        },
+        getVolume = function() {
+            return tag.volume;
         }
     ;
 

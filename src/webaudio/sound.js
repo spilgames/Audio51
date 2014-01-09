@@ -9,9 +9,13 @@ define(function() {
     'use strict';
     
     var Sound = function( buffer, ctx ) {
-            var n = createBufferSource( buffer, ctx );
+            var gainNode = createGainNode( ctx ),
+                n = createBufferSource( buffer, ctx, gainNode );
             return {
-                play: function() {
+                play: function( volume ) {
+                    if (volume !== void 0) {
+                        setVolume(gainNode, volume);                        
+                    }
                     play( n );
                 },
                 stop: function() {
@@ -22,14 +26,25 @@ define(function() {
                 },
                 loop: function( value ) {
                     loop( n, value );
+                },
+                setVolume: function ( value ) {
+                    setVolume( gainNode, value );
+                },
+                getVolume: function () {
+                    return getVolume( gainNode );
                 }
             }
         },
-        createBufferSource = function( buffer, context ) {
+        createBufferSource = function( buffer, context, gainNode ) {
             var node = context.createBufferSource();
             node.buffer = buffer;
-            node.connect(context.destination);
+            node.connect(gainNode);
             return node;
+        },
+        createGainNode = function( context ) {
+            var gainNode = context.createGainNode();
+            gainNode.connect(context.destination);
+            return gainNode;
         },
         play = function( node ) {
             //Connect to speakers
@@ -55,6 +70,12 @@ define(function() {
         },
         loop = function( node, value ) {
             node.loop = value;
+        },
+        setVolume = function ( gainNode, value ) {
+            gainNode.gain.value = value;
+        },
+        getVolume = function ( gainNode ) {
+            return gainNode.gain.value;
         }
     ;
 

@@ -138,12 +138,11 @@ define(
             return getContext().parse( newSet, baseUrl, ext );
         },
         
-        play: function( id ) {
+        play: function( id, volume ) {
 
-            return getContext().play( id );
+            return getContext().play( id, volume );
 
         }
-
     };
 
 });
