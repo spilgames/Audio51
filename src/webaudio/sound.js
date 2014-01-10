@@ -21,7 +21,7 @@ define(function() {
                     play( n );
                 },
                 stop: function() {
-                    n = stop( n, buffer, ctx );
+                    n = stop( n, buffer, ctx, gainNode );
                 },
                 getLength: function() {
                     return getLength( n );
@@ -31,6 +31,9 @@ define(function() {
                 },
                 setVolume: function ( value ) {
                     setVolume( gainNode, value );
+                },
+                setMute: function ( value ) {
+                    setMute( gainNode, value );
                 },
                 getVolume: function () {
                     return getVolume( gainNode );
@@ -64,7 +67,7 @@ define(function() {
                 node.noteOn( 0 );
             }
         },
-        stop = function( node, buffer, ctx ) {
+        stop = function( node, buffer, ctx, gainNode ) {
             if ( node.stop ) {
                 node.stop( 0 );
             } else {
@@ -73,7 +76,7 @@ define(function() {
             //Disconnect from speakers, allow garbage collection
             node.disconnect();
             //Create new buffersource so we can fire this sound again
-            return createBufferSource( buffer, ctx );
+            return createBufferSource( buffer, ctx, gainNode);
         },
         getLength = function( node ) {
             return node.buffer.length / node.buffer.sampleRate;
@@ -92,6 +95,9 @@ define(function() {
         },
         onEnded = function ( node, callback) {
             node.onended = callback;
+        },
+        setMute = function ( gainNode, value ) {
+            gainNode.gain.value = value ? 0 : 1;
         }
     ;
 

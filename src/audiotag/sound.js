@@ -44,6 +44,9 @@ define(["audio51/unrestrict"],function(unrestrict) {
                 setVolume: function ( value ) {
                     setVolume( tag, value );
                 },
+                setMute: function ( value ) {
+                    setMute( tag, value );
+                },
                 getVolume: function () {
                     return getVolume( tag );
                 },
@@ -84,7 +87,10 @@ define(["audio51/unrestrict"],function(unrestrict) {
             return !tag.ended;
         },
         onEnded = function ( tag, callback ) {
-            tag.ended = callback;
+            tag.addEventListener('ended', callback);
+        },
+        setMute = function( tag, value ) {
+            tag.muted = value ? true : false;
         }
     ;
 
