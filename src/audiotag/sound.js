@@ -28,7 +28,7 @@ define(["audio51/unrestrict"],function(unrestrict) {
             return{
                 play: function( volume ) {
                     if (volume !== void 0) {
-                        setVolume( volume );
+                        setVolume( tag, volume );
                     }
                     play( tag );
                 },
@@ -42,10 +42,19 @@ define(["audio51/unrestrict"],function(unrestrict) {
                     loop( tag, value );
                 },
                 setVolume: function ( value ) {
-                    setVolume( value );
+                    setVolume( tag, value );
+                },
+                setMute: function ( value ) {
+                    setMute( tag, value );
                 },
                 getVolume: function () {
-                    return getVolume();
+                    return getVolume( tag );
+                },
+                isPlaying: function () {
+                    return isPlaying( tag );
+                },
+                onEnded: function (callback, scope) {
+                    onEnded(tag, callback, scope);
                 },
                 tag: tag //a little evil, but allows re-use by restricted context.
             };
@@ -68,11 +77,20 @@ define(["audio51/unrestrict"],function(unrestrict) {
         loop = function( tag, value ) {
             tag.loop = value;
         },
-        setVolume = function( value ) {
+        setVolume = function( tag, value ) {
             tag.volume = value;
         },
-        getVolume = function() {
+        getVolume = function( tag ) {
             return tag.volume;
+        },
+        isPlaying = function ( tag ) {
+            return !tag.ended;
+        },
+        onEnded = function ( tag, callback ) {
+            tag.addEventListener('ended', callback);
+        },
+        setMute = function( tag, value ) {
+            tag.muted = value ? true : false;
         }
     ;
 
