@@ -138,8 +138,10 @@ define(["audio51/webaudio/sound", "audio51/unrestrict"],function( Sound, Unrestr
                 spriteName, url;
 
             for (spriteName in soundSet.spritemap) {
-                url = baseUrl + "_00" + (++i) + "." + ext;
-                all.push( addSound( spriteName, url ) );
+                if (soundSet.spritemap.hasOwnProperty(spriteName)) {
+                    url = baseUrl + '_' + ('00' + (++i)).slice(-3) + '.' + ext;
+                    all.push( addSound( spriteName, url ) );
+                }
             }
 
             return RSVP.all( all );
