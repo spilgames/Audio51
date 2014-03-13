@@ -1,9 +1,8 @@
 # Audio51, a no-nonsense solution for Audio in HTML5
-## Part of the Glue Game Engine
-
+Copyright (C) 2014, SpilGames  
+all rights reserved  
 licensed under the BSD 3-Clause license, see the [license file](https://github.com/spilgames/Audio51/blob/master/LICENSE)  
-author: Martin Reurings  
-maintained by [Buffer-Overflow](https://github.com/Buffer-Overflow)  
+created by Martin Reurings
 
 ### Get Started
 
